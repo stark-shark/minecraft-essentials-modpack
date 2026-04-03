@@ -1,0 +1,1 @@
+Essentials is a lightweight, client-side Fabric modpack for Minecraft that improves performance, visuals, and quality of life using 14 carefully selected mods.
