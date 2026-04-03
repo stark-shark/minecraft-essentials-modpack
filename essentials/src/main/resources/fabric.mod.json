@@ -3,7 +3,7 @@
   "id": "essentials",
   "version": "${version}",
   "name": "Essentials",
-  "description": "All-in-one client-side QoL mod — emissive textures, zoom, fullbright, fog control, dynamic FPS, borderless fullscreen, BetterF3 debug HUD, mob health bars, pickup notifier, status effect timers, auto-clicker, and more.",
+  "description": "All-in-one client-side QoL mod — emissive textures, zoom, fullbright, fog control, dynamic FPS, borderless fullscreen, health bars, pickup notifier, status effect bars, coords HUD, durability display, death waypoint, auto-clicker, and more.",
   "authors": ["stark-shark"],
   "contact": {
     "homepage": "https://modrinth.com/project/mc-essentials-modpack",

@@ -2,7 +2,9 @@
 
 A curated Fabric modpack for Minecraft 26.1 focused on performance, quality-of-life, and visual enhancements. Client-side only.
 
-Created by [stark-shark](https://github.com/stark-shark)
+Created by [stark-shark](https://github.com/stark-shark) | [Modrinth](https://modrinth.com/project/mc-essentials-modpack)
+
+[![Support on Ko-fi](https://img.shields.io/badge/Support-Ko--fi-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/stark_shark)
 
 ## Quick Start
 
@@ -31,7 +33,7 @@ cd ..
 ### Custom
 | Mod | Features |
 |---|---|
-| **Essentials** | Emissive textures, zoom, fullbright, fog control, dynamic FPS, borderless fullscreen, BetterF3 debug HUD, mob health bars, auto-clicker, pickup notifier, config screen |
+| **Essentials** | Emissive textures, zoom, fullbright, fog control, dynamic FPS, borderless fullscreen, mob/player health bars, pickup notifier, status effect bars, coords HUD, armor durability, death waypoint, auto-clicker, config screen |
 
 ### Dependencies
 | Mod | Source |
@@ -84,9 +86,7 @@ These mods will be added to the modpack once they release builds for MC 26.1:
 | **C** (hold) | Zoom (scroll to adjust) |
 | **H** | Toggle fullbright |
 | **F11** | Borderless fullscreen |
-| **F3** | Custom debug HUD |
-| **F3+M** | Open Essentials config |
-| **` (backtick)** | Toggle auto-attack |
+| **` (backtick)** | Toggle auto-click/hold |
 
 All keybinds are configurable in Options > Controls > Essentials. Conflicts show in red.
 
@@ -98,20 +98,23 @@ All keybinds are configurable in Options > Controls > Essentials. Conflicts show
 4. **Fog Control** — Disable void, water, lava, and distance fog independently
 5. **Dynamic FPS** — Throttles FPS when unfocused (15) or minimized (1)
 6. **Borderless Fullscreen** — Fast alt-tab, replaces exclusive fullscreen
-7. **Better Debug HUD** — 12 color-coded modules with per-line toggles, reordering, spacers, heightmap, slime chunks, moon phase, entity categories, block/fluid tags
-8. **Mob Health Bars** — Colored block indicators above damaged entities
-9. **Pickup Notifier** — Shows item name and total count when picking up items, stacks duplicates, fades after 5 seconds
-10. **Auto-Clicker** — Toggle hold or interval clicking for mining/AFK
-11. **Config Screen** — Sidebar layout with search, master toggles, greyed-out children, F3+M shortcut
-12. **Config Persistence** — All settings saved to `config/essentials.properties`
-13. **Mod Compatibility** — Auto-disables overlapping features when other mods detected
+7. **Mob & Player Health Bars** — Colored block indicators above entities, separate mob/player toggles
+8. **Pickup Notifier** — Item icon + count when picking up items, scalable size
+9. **Status Effect Bars** — Duration progress bars on effect icons
+10. **Coordinates HUD** — Always-visible XYZ + facing, scalable
+11. **Armor Durability Display** — Item icons with colored durability bars, scalable
+12. **Death Waypoint** — Clickable death coordinates in chat on respawn
+13. **Auto-Clicker** — Toggle hold or interval clicking with CPS slider
+14. **Config Screen** — Sidebar layout with global search, sliders, grouped sections, reset defaults
+15. **Config Persistence** — All settings saved to `config/essentials.properties`
+16. **Mod Compatibility** — Auto-disables overlapping features when other mods detected
 
 ## Compatibility Notes
 
 - **Sodium + Emissive Overlays**: May need testing — Sodium replaces the block renderer
 - **Iris + Fullbright**: Shader packs may override fullbright
 - **LambDynamicLights**: Provides handheld light glow (not built into Essentials)
-- **Auto-defers**: Essentials disables its own zoom/debug HUD/dynamic FPS if Zoomify/BetterF3/Dynamic FPS mods are installed
+- **Auto-defers**: Essentials disables its own zoom/dynamic FPS if Zoomify/Dynamic FPS mods are installed
 
 ## License
 
