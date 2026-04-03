@@ -29,7 +29,7 @@ cd essentials && gradlew.bat build && cd ..
 - Java 25 JDK
 - Fabric Loader 0.18.6+
 
-## Included Mods (15)
+## Included Mods (11)
 
 ### Custom
 | Mod | Features |
@@ -48,14 +48,12 @@ cd essentials && gradlew.bat build && cd ..
 |---|---|
 | [Sodium](https://modrinth.com/mod/sodium) | [GitHub](https://github.com/CaffeineMC/sodium) |
 | [Lithium](https://modrinth.com/mod/lithium) | [GitHub](https://github.com/CaffeineMC/lithium-fabric) |
-| [Entity Culling](https://modrinth.com/mod/entityculling) | [GitHub](https://github.com/tr7zw/EntityCulling) |
 
 ### Visual
 | Mod | Source |
 |---|---|
 | [Iris Shaders](https://modrinth.com/mod/iris) | [GitHub](https://github.com/IrisShaders/Iris) |
 | [LambDynamicLights](https://modrinth.com/mod/lambdynamiclights) | [GitHub](https://github.com/LambdAurora/LambDynamicLights) |
-| [Status Effect Bars](https://modrinth.com/mod/status-effect-bars) | [GitHub](https://github.com/A5b84/status-effect-bars) |
 | [Chat Heads](https://modrinth.com/mod/chat-heads) | [GitHub](https://github.com/dzwdz/chat_heads) |
 
 ### Map
@@ -67,8 +65,6 @@ cd essentials && gradlew.bat build && cd ..
 | Mod | Source |
 |---|---|
 | [Mouse Tweaks](https://modrinth.com/mod/mouse-tweaks) | [GitHub](https://github.com/YaLTeR/MouseTweaks) |
-| [Controlling](https://modrinth.com/mod/controlling) | [GitHub](https://github.com/jaredlll08/Controlling) |
-| [No Chat Reports](https://modrinth.com/mod/no-chat-reports) | [GitHub](https://github.com/Aizistral-Studios/No-Chat-Reports) |
 
 ### Planned — Waiting for 26.1 Update
 These mods will be added to the modpack once they release builds for MC 26.1:
