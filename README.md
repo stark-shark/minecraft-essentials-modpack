@@ -8,17 +8,18 @@ Created by [stark-shark](https://github.com/stark-shark) | [Modrinth](https://mo
 
 ## Quick Start
 
+### One-Click Install (Windows)
+1. Install [Java 25 JDK](https://adoptium.net/) and [Fabric Loader](https://fabricmc.net/use/installer/) for MC 26.1
+2. Download or clone this repo
+3. Double-click **`install-modpack.bat`**
+4. Launch Minecraft with the `fabric-loader-26.1` profile
+
+That's it. The installer builds the Essentials mod, downloads all 15 mods from Modrinth, and copies everything to your `.minecraft/mods/` folder.
+
+### Manual Install
 ```bash
-# 1. Build the custom Essentials mod
-cd essentials
-set JAVA_HOME=C:\Program Files\Java\jdk-25.0.2
-.\gradlew.bat build
-cd ..
-
-# 2. Download all mods from Modrinth
+cd essentials && gradlew.bat build && cd ..
 .\download-mods.bat
-
-# 3. Install to .minecraft/mods
 .\install.bat
 ```
 
