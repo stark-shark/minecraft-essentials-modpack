@@ -1,0 +1,48 @@
+{
+  "key.category.essentials.main": "Essentials",
+
+  "key.essentials.zoom": "Zoom",
+  "key.essentials.fullbright": "Toggle Fullbright",
+  "key.essentials.autoattack": "Toggle Auto-Attack",
+
+  "config.essentials.title": "Essentials Settings",
+
+  "config.essentials.emissive": "Emissive Textures",
+  "config.essentials.emissive.enabled": "Enable Emissive Overlays",
+  "config.essentials.emissive.blocks": "Block Emissives",
+  "config.essentials.emissive.entities": "Entity Emissives",
+
+  "config.essentials.zoom": "Zoom",
+  "config.essentials.zoom.enabled": "Enable Zoom",
+  "config.essentials.zoom.defaultFov": "Default Zoom FOV",
+  "config.essentials.zoom.scrollSensitivity": "Scroll Sensitivity",
+  "config.essentials.zoom.transitionSpeed": "Transition Speed",
+  "config.essentials.zoom.reduceSensitivity": "Reduce Mouse Sensitivity",
+  "config.essentials.zoom.smoothCamera": "Smooth Camera While Zooming",
+
+  "config.essentials.fullbright": "Fullbright",
+  "config.essentials.fullbright.enabled": "Enable Fullbright Toggle",
+  "config.essentials.fullbright.defaultOn": "On By Default",
+
+  "config.essentials.fog": "Fog Control",
+  "config.essentials.fog.enabled": "Enable Fog Control",
+  "config.essentials.fog.disableVoid": "Disable Void Fog",
+  "config.essentials.fog.disableWater": "Disable Water Fog",
+  "config.essentials.fog.disableLava": "Disable Lava Fog",
+  "config.essentials.fog.disableDistance": "Disable Distance Fog",
+  "config.essentials.fog.distanceMultiplier": "Fog Distance Multiplier",
+
+  "config.essentials.dynamicfps": "Dynamic FPS",
+  "config.essentials.dynamicfps.enabled": "Enable Dynamic FPS",
+  "config.essentials.dynamicfps.unfocusedCap": "Unfocused FPS Cap",
+  "config.essentials.dynamicfps.minimizedCap": "Minimized FPS Cap",
+
+  "config.essentials.borderless": "Borderless Fullscreen",
+  "config.essentials.borderless.enabled": "Enable Borderless Mode",
+
+  "config.essentials.debughud": "Debug HUD",
+  "config.essentials.debughud.enabled": "Enable Custom Debug HUD",
+  "config.essentials.debughud.fontScale": "Font Scale",
+  "config.essentials.debughud.backgroundAlpha": "Background Opacity",
+  "config.essentials.debughud.textShadow": "Text Shadow"
+}

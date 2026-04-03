@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "package": "com.essentials.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "rendering.FullbrightMixin",
+    "rendering.FogMixin",
+    "rendering.AtmosphericFogMixin",
+    "rendering.WaterFogMixin",
+    "rendering.LavaFogMixin",
+    "performance.DynamicFpsMixin",
+    "zoom.CameraZoomMixin",
+    "zoom.MouseScrollMixin",
+    "zoom.MouseSensitivityMixin",
+    "window.BorderlessMixin",
+    "entity.LivingEntityRenderStateMixin",
+    "entity.LivingEntityRendererMixin",
+    "entity.EntityRendererHealthMixin",
+    "emissive.SpriteLoaderMixin",
+    "autoclicker.AutoClickMixin",
+    "pickup.PickupDetectMixin",
+    "pickup.PickupHudMixin",
+    "statuseffect.EffectBarMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

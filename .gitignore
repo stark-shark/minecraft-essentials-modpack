@@ -1,0 +1,22 @@
+# Mod jars (downloaded, not committed)
+mods/*.jar
+
+# Gradle build artifacts
+essentials/.gradle/
+essentials/build/
+essentials/run/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Reference repos
+essentials/_reference/
+
+# Modrinth description (not for GitHub)
+MODRINTH_DESCRIPTION.md

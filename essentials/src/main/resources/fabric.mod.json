@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "essentials",
+  "version": "${version}",
+  "name": "Essentials",
+  "description": "All-in-one client-side QoL mod — emissive textures, zoom, fullbright, fog control, dynamic FPS, borderless fullscreen, BetterF3 debug HUD, mob health bars, pickup notifier, status effect timers, auto-clicker, and more.",
+  "authors": ["stark-shark"],
+  "contact": {
+    "homepage": "https://modrinth.com/project/mc-essentials-modpack",
+    "sources": "https://github.com/stark-shark/minecraft-essentials-modpack",
+    "issues": "https://github.com/stark-shark/minecraft-essentials-modpack/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/essentials/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.essentials.EssentialsMod"],
+    "modmenu": ["com.essentials.config.ModMenuIntegration"]
+  },
+  "mixins": ["essentials.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "fabric-api": "*",
+    "minecraft": ">=26.1",
+    "java": ">=25",
+    "cloth-config": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}
