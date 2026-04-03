@@ -1,4 +1,4 @@
-# Mod List — Essentials Modpack (MC 26.1 Fabric)
+# Mod List — Essentials Modpack (MC 26.1.1 Fabric)
 
 ### Custom
 - [x] **Essentials** — Build from `essentials/` source

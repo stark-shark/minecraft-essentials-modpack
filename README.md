@@ -1,6 +1,6 @@
 # Essentials Modpack
 
-A curated Fabric modpack for Minecraft 26.1+ focused on performance, quality-of-life, and visual enhancements. Client-side only — no server installation needed.
+A curated Fabric modpack for Minecraft 26.1.1 focused on performance, quality-of-life, and visual enhancements. Client-side only — no server installation needed.
 
 Created by [stark-shark](https://github.com/stark-shark) | [Modrinth](https://modrinth.com/project/mc-essentials-modpack)
 
@@ -9,10 +9,10 @@ Created by [stark-shark](https://github.com/stark-shark) | [Modrinth](https://mo
 ## Quick Start
 
 ### One-Click Install (Windows)
-1. Install [Java 25 JDK](https://adoptium.net/) and [Fabric Loader](https://fabricmc.net/use/installer/) for MC 26.1
+1. Install [Java 25 JDK](https://adoptium.net/) and [Fabric Loader](https://fabricmc.net/use/installer/) for MC 26.1.1
 2. Download or clone this repo
 3. Double-click **`install-modpack.bat`**
-4. Launch Minecraft with the `fabric-loader-26.1` profile
+4. Launch Minecraft with the `fabric-loader-26.1.1` profile
 
 The installer builds the Essentials mod, downloads all mods from Modrinth, and copies everything to your `.minecraft/mods/` folder. If you have existing mods, you'll be warned before anything is touched.
 
@@ -20,7 +20,7 @@ To uninstall, double-click **`uninstall-modpack.bat`**.
 
 ## Requirements
 
-- Minecraft Java Edition 26.1+
+- Minecraft Java Edition 26.1.1
 - Java 25 JDK
 - Fabric Loader 0.18.6+
 

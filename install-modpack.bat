@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 title Essentials Modpack Installer
 echo.
 echo  ===================================
-echo   Essentials Modpack for MC 26.1
+echo   Essentials Modpack for MC 26.1.1
 echo   One-Click Installer
 echo  ===================================
 echo.
@@ -103,7 +103,7 @@ if not exist "%JAVA_HOME%\bin\java.exe" (
 if not exist "%APPDATA%\.minecraft\versions\fabric-loader-*" (
     echo [WARN] Fabric Loader may not be installed.
     echo        Install from https://fabricmc.net/use/installer/
-    echo        Select Minecraft 26.1, then click Install.
+    echo        Select Minecraft 26.1.1, then click Install.
     echo.
 )
 
@@ -198,7 +198,7 @@ echo  ===================================
 echo   Installation complete!
 echo.
 echo   Launch Minecraft with the
-echo   fabric-loader-26.1 profile.
+echo   fabric-loader-26.1.1 profile.
 echo.
 echo   Config: Mod Menu ^> Essentials
 echo   Keybinds: C=Zoom H=Fullbright
