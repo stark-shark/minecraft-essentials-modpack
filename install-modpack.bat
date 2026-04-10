@@ -122,7 +122,7 @@ if errorlevel 1 (
     exit /b 1
 )
 popd
-if not exist "%PACK_DIR%essentials\build\libs\essentials-0.1.0+26.1.jar" (
+if not exist "%PACK_DIR%essentials\build\libs\essentials-2.0.0+26.1.jar" (
     echo [ERROR] Essentials jar not found after build.
     pause
     exit /b 1
@@ -171,8 +171,8 @@ curl -sL "https://cdn.modrinth.com/data/aC3cM3Vq/versions/EBIKCzuP/MouseTweaks-f
 
 :: Essentials
 echo   Essentials...
-copy "%PACK_DIR%essentials\build\libs\essentials-0.1.0+26.1.jar" "%PACK_DIR%mods\essentials-0.1.0+26.1.jar" >nul
-if not exist "%PACK_DIR%mods\essentials-0.1.0+26.1.jar" (
+copy "%PACK_DIR%essentials\build\libs\essentials-2.0.0+26.1.jar" "%PACK_DIR%mods\essentials-2.0.0+26.1.jar" >nul
+if not exist "%PACK_DIR%mods\essentials-2.0.0+26.1.jar" (
     echo [ERROR] Failed to copy Essentials jar.
     pause
     exit /b 1
