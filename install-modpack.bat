@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 title Essentials Modpack Installer
 echo.
 echo  ===================================
-echo   Essentials Modpack for MC 26.1.1
+echo   Essentials Modpack for MC 26.x
 echo   One-Click Installer
 echo  ===================================
 echo.
@@ -122,7 +122,10 @@ if errorlevel 1 (
     exit /b 1
 )
 popd
-if not exist "%PACK_DIR%essentials\build\libs\essentials-2.0.0+26.1.jar" (
+:: Verify at least one jar was produced
+set "FOUND_JAR="
+for %%f in ("%PACK_DIR%essentials\build\libs\essentials-*.jar") do set "FOUND_JAR=1"
+if not defined FOUND_JAR (
     echo [ERROR] Essentials jar not found after build.
     pause
     exit /b 1
@@ -139,44 +142,43 @@ echo.
 if exist "%PACK_DIR%mods" rd /S /Q "%PACK_DIR%mods"
 mkdir "%PACK_DIR%mods"
 
-:: Dependencies
-echo   Fabric API...
-curl -sL "https://cdn.modrinth.com/data/P7dR8mSH/versions/G0yfY6x2/fabric-api-0.145.3%%2B26.1.1.jar" -o "%PACK_DIR%mods\fabric-api-0.145.3+26.1.1.jar"
-echo   Cloth Config...
-curl -sL "https://cdn.modrinth.com/data/9s6osm5g/versions/GFM8zh9J/cloth-config-26.1.154.jar" -o "%PACK_DIR%mods\cloth-config-26.1.154.jar"
-echo   Mod Menu...
-curl -sL "https://cdn.modrinth.com/data/mOgUt4GM/versions/jvjwXH6l/modmenu-18.0.0-alpha.8.jar" -o "%PACK_DIR%mods\modmenu-18.0.0-alpha.8.jar"
+:: ============================================
+:: AUTO-RESOLVE LATEST VERSIONS FROM MODRINTH
+:: ============================================
+:: Each mod is fetched by its Modrinth project ID using the API
+:: to find the latest Fabric-compatible version. This means the
+:: installer always grabs the newest build — no hardcoded URLs.
 
-:: Performance
-echo   Sodium...
-curl -sL "https://cdn.modrinth.com/data/AANobbMI/versions/uGvVQBnw/sodium-fabric-0.8.9%%2Bmc26.1.1.jar" -o "%PACK_DIR%mods\sodium-fabric-0.8.9+mc26.1.1.jar"
-echo   Lithium...
-curl -sL "https://cdn.modrinth.com/data/gvQqBUqZ/versions/kHXOBNih/lithium-fabric-0.23.0%%2Bmc26.1.1.jar" -o "%PACK_DIR%mods\lithium-fabric-0.23.0+mc26.1.1.jar"
+set MC_VER=26.1.2
+set LOADER=fabric
+set API=https://api.modrinth.com/v2
 
-:: Visual
-echo   Iris Shaders...
-curl -sL "https://cdn.modrinth.com/data/YL57xq9U/versions/MwcLS51S/iris-fabric-1.10.9%%2Bmc26.1.1.jar" -o "%PACK_DIR%mods\iris-fabric-1.10.9+mc26.1.1.jar"
-echo   LambDynamicLights...
-curl -sL "https://cdn.modrinth.com/data/yBW8D80W/versions/Nttq3ROe/lambdynamiclights-4.10.0%%2B26.1.jar" -o "%PACK_DIR%mods\lambdynamiclights-4.10.0+26.1.jar"
-echo   Chat Heads...
-curl -sL "https://cdn.modrinth.com/data/Wb5oqrBJ/versions/J5xd8lnJ/chat_heads-1.2.2-fabric-26.1.jar" -o "%PACK_DIR%mods\chat_heads-1.2.2-fabric-26.1.jar"
+:: Helper: download latest version of a Modrinth mod
+:: Usage: call :dl_mod "Display Name" "project_id"
+call :dl_mod "Fabric API"         "P7dR8mSH"
+call :dl_mod "Cloth Config"       "9s6osm5g"
+call :dl_mod "Mod Menu"           "mOgUt4GM"
+call :dl_mod "Sodium"             "AANobbMI"
+call :dl_mod "Lithium"            "gvQqBUqZ"
+call :dl_mod "Iris Shaders"       "YL57xq9U"
+call :dl_mod "LambDynamicLights"  "yBW8D80W"
+call :dl_mod "Chat Heads"         "Wb5oqrBJ"
+call :dl_mod "JourneyMap"         "lfHFW1mp"
+call :dl_mod "Mouse Tweaks"       "aC3cM3Vq"
 
-:: Map
-echo   JourneyMap...
-curl -sL "https://cdn.modrinth.com/data/lfHFW1mp/versions/1lcmIgq5/journeymap-fabric-26.1-6.0.0-beta.64.jar" -o "%PACK_DIR%mods\journeymap-fabric-26.1-6.0.0-beta.64.jar"
-
-:: QoL
-echo   Mouse Tweaks...
-curl -sL "https://cdn.modrinth.com/data/aC3cM3Vq/versions/EBIKCzuP/MouseTweaks-fabric-mc26.1-2.31.jar" -o "%PACK_DIR%mods\MouseTweaks-fabric-mc26.1-2.31.jar"
-
-:: Essentials
+:: Essentials (built from source)
 echo   Essentials...
-copy "%PACK_DIR%essentials\build\libs\essentials-2.0.0+26.1.jar" "%PACK_DIR%mods\essentials-2.0.0+26.1.jar" >nul
-if not exist "%PACK_DIR%mods\essentials-2.0.0+26.1.jar" (
-    echo [ERROR] Failed to copy Essentials jar.
+:: Find the built jar dynamically (matches any version)
+set "ESSENTIALS_JAR="
+for %%f in ("%PACK_DIR%essentials\build\libs\essentials-*.jar") do (
+    echo %%~nxf | findstr /V "sources" >nul && set "ESSENTIALS_JAR=%%f"
+)
+if not defined ESSENTIALS_JAR (
+    echo [ERROR] Essentials jar not found after build.
     pause
     exit /b 1
 )
+copy "%ESSENTIALS_JAR%" "%PACK_DIR%mods\" >nul
 echo.
 echo [OK] All mods downloaded.
 echo.
@@ -198,8 +200,8 @@ echo.
 echo  ===================================
 echo   Installation complete!
 echo.
-echo   Launch Minecraft with the
-echo   fabric-loader-26.1.1 profile.
+echo   Launch Minecraft with your
+echo   Fabric Loader profile.
 echo.
 echo   Config: Mod Menu ^> Essentials
 echo   Keybinds: C=Zoom H=Fullbright
@@ -207,3 +209,42 @@ echo             `=Auto-click F11=Borderless
 echo  ===================================
 echo.
 pause
+exit /b 0
+
+:: ============================================
+:: SUBROUTINE: Download latest Fabric version
+:: of a Modrinth mod by project ID.
+:: Tries MC_VER first, then falls back to any
+:: version listing the current major (26.1).
+:: ============================================
+:dl_mod
+set "MOD_NAME=%~1"
+set "MOD_ID=%~2"
+echo   %MOD_NAME%...
+
+:: Try exact MC version first, then fall back to broader matches
+for %%V in ("%MC_VER%" "26.1.1" "26.1") do (
+    for /f "delims=" %%u in ('curl -sL "%API%/project/%MOD_ID%/version?game_versions=[%%~V]&loaders=[%%~22%LOADER%%%~22]" 2^>nul ^| findstr /R "\"url\":\"https://cdn"') do (
+        set "LINE=%%u"
+        goto :parse_url
+    )
+)
+echo     [WARN] No compatible version found for %MOD_NAME%
+goto :eof
+
+:parse_url
+:: Extract the CDN URL from the JSON line
+set "DL_URL=!LINE:*"url":"=!"
+set "DL_URL=!DL_URL:"=!"
+set "DL_URL=!DL_URL:,=!"
+:: Extract filename from URL
+for %%f in ("!DL_URL!") do set "DL_FILE=%%~nxf"
+:: Decode %%2B back to + in filename
+set "DL_FILE=!DL_FILE:%%2B=+!"
+curl -sL "!DL_URL!" -o "%PACK_DIR%mods\!DL_FILE!"
+if exist "%PACK_DIR%mods\!DL_FILE!" (
+    echo     [OK] !DL_FILE!
+) else (
+    echo     [WARN] Failed to download %MOD_NAME%
+)
+goto :eof
