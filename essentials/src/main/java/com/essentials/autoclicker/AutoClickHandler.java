@@ -19,7 +19,10 @@ public class AutoClickHandler {
         }
 
         if (mc.player == null || mc.level == null) { active = false; return; }
-        if (mc.screen != null) return;
+        if (mc.screen != null) {
+            if (active) getKey(mc).setDown(false);
+            return;
+        }
 
         if (ModKeybinds.autoAttackKey.consumeClick()) {
             active = !active;
