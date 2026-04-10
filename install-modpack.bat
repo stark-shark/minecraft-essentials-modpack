@@ -114,7 +114,7 @@ if not exist "%APPDATA%\.minecraft\versions\fabric-loader-*" (
 echo Step 1/3: Building Essentials mod...
 echo.
 pushd "%PACK_DIR%essentials"
-call .\gradlew.bat build --no-daemon
+call .\gradlew.bat clean build --no-daemon
 if errorlevel 1 (
     echo.
     echo [ERROR] Build failed. Make sure Java 25 is installed.
