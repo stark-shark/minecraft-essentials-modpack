@@ -10,6 +10,7 @@ echo.
 
 set MC_MODS=%APPDATA%\.minecraft\mods
 set JAVA_HOME=C:\Program Files\Java\jdk-25.0.2
+set PACK_DIR=%~dp0
 
 :: ============================================
 :: CHECK FOR EXISTING MODS FIRST
@@ -112,7 +113,7 @@ if not exist "%APPDATA%\.minecraft\versions\fabric-loader-*" (
 :: ============================================
 echo Step 1/3: Building Essentials mod...
 echo.
-cd essentials
+pushd "%PACK_DIR%essentials"
 call .\gradlew.bat build --no-daemon
 if errorlevel 1 (
     echo.
@@ -120,8 +121,8 @@ if errorlevel 1 (
     pause
     exit /b 1
 )
-cd ..
-if not exist "essentials\build\libs\essentials-0.1.0+26.1.jar" (
+popd
+if not exist "%PACK_DIR%essentials\build\libs\essentials-0.1.0+26.1.jar" (
     echo [ERROR] Essentials jar not found after build.
     pause
     exit /b 1
@@ -135,43 +136,43 @@ echo.
 echo Step 2/3: Downloading mods from Modrinth...
 echo.
 :: Clear local cache to prevent stale jars
-if exist mods rd /S /Q mods
-mkdir mods
+if exist "%PACK_DIR%mods" rd /S /Q "%PACK_DIR%mods"
+mkdir "%PACK_DIR%mods"
 
 :: Dependencies
 echo   Fabric API...
-curl -sL "https://cdn.modrinth.com/data/P7dR8mSH/versions/G0yfY6x2/fabric-api-0.145.3%%2B26.1.1.jar" -o "mods\fabric-api-0.145.3+26.1.1.jar"
+curl -sL "https://cdn.modrinth.com/data/P7dR8mSH/versions/G0yfY6x2/fabric-api-0.145.3%%2B26.1.1.jar" -o "%PACK_DIR%mods\fabric-api-0.145.3+26.1.1.jar"
 echo   Cloth Config...
-curl -sL "https://cdn.modrinth.com/data/9s6osm5g/versions/GFM8zh9J/cloth-config-26.1.154.jar" -o "mods\cloth-config-26.1.154.jar"
+curl -sL "https://cdn.modrinth.com/data/9s6osm5g/versions/GFM8zh9J/cloth-config-26.1.154.jar" -o "%PACK_DIR%mods\cloth-config-26.1.154.jar"
 echo   Mod Menu...
-curl -sL "https://cdn.modrinth.com/data/mOgUt4GM/versions/jvjwXH6l/modmenu-18.0.0-alpha.8.jar" -o "mods\modmenu-18.0.0-alpha.8.jar"
+curl -sL "https://cdn.modrinth.com/data/mOgUt4GM/versions/jvjwXH6l/modmenu-18.0.0-alpha.8.jar" -o "%PACK_DIR%mods\modmenu-18.0.0-alpha.8.jar"
 
 :: Performance
 echo   Sodium...
-curl -sL "https://cdn.modrinth.com/data/AANobbMI/versions/uGvVQBnw/sodium-fabric-0.8.9%%2Bmc26.1.1.jar" -o "mods\sodium-fabric-0.8.9+mc26.1.1.jar"
+curl -sL "https://cdn.modrinth.com/data/AANobbMI/versions/uGvVQBnw/sodium-fabric-0.8.9%%2Bmc26.1.1.jar" -o "%PACK_DIR%mods\sodium-fabric-0.8.9+mc26.1.1.jar"
 echo   Lithium...
-curl -sL "https://cdn.modrinth.com/data/gvQqBUqZ/versions/kHXOBNih/lithium-fabric-0.23.0%%2Bmc26.1.1.jar" -o "mods\lithium-fabric-0.23.0+mc26.1.1.jar"
+curl -sL "https://cdn.modrinth.com/data/gvQqBUqZ/versions/kHXOBNih/lithium-fabric-0.23.0%%2Bmc26.1.1.jar" -o "%PACK_DIR%mods\lithium-fabric-0.23.0+mc26.1.1.jar"
 
 :: Visual
 echo   Iris Shaders...
-curl -sL "https://cdn.modrinth.com/data/YL57xq9U/versions/MwcLS51S/iris-fabric-1.10.9%%2Bmc26.1.1.jar" -o "mods\iris-fabric-1.10.9+mc26.1.1.jar"
+curl -sL "https://cdn.modrinth.com/data/YL57xq9U/versions/MwcLS51S/iris-fabric-1.10.9%%2Bmc26.1.1.jar" -o "%PACK_DIR%mods\iris-fabric-1.10.9+mc26.1.1.jar"
 echo   LambDynamicLights...
-curl -sL "https://cdn.modrinth.com/data/yBW8D80W/versions/Nttq3ROe/lambdynamiclights-4.10.0%%2B26.1.jar" -o "mods\lambdynamiclights-4.10.0+26.1.jar"
+curl -sL "https://cdn.modrinth.com/data/yBW8D80W/versions/Nttq3ROe/lambdynamiclights-4.10.0%%2B26.1.jar" -o "%PACK_DIR%mods\lambdynamiclights-4.10.0+26.1.jar"
 echo   Chat Heads...
-curl -sL "https://cdn.modrinth.com/data/Wb5oqrBJ/versions/J5xd8lnJ/chat_heads-1.2.2-fabric-26.1.jar" -o "mods\chat_heads-1.2.2-fabric-26.1.jar"
+curl -sL "https://cdn.modrinth.com/data/Wb5oqrBJ/versions/J5xd8lnJ/chat_heads-1.2.2-fabric-26.1.jar" -o "%PACK_DIR%mods\chat_heads-1.2.2-fabric-26.1.jar"
 
 :: Map
 echo   JourneyMap...
-curl -sL "https://cdn.modrinth.com/data/lfHFW1mp/versions/1lcmIgq5/journeymap-fabric-26.1-6.0.0-beta.64.jar" -o "mods\journeymap-fabric-26.1-6.0.0-beta.64.jar"
+curl -sL "https://cdn.modrinth.com/data/lfHFW1mp/versions/1lcmIgq5/journeymap-fabric-26.1-6.0.0-beta.64.jar" -o "%PACK_DIR%mods\journeymap-fabric-26.1-6.0.0-beta.64.jar"
 
 :: QoL
 echo   Mouse Tweaks...
-curl -sL "https://cdn.modrinth.com/data/aC3cM3Vq/versions/EBIKCzuP/MouseTweaks-fabric-mc26.1-2.31.jar" -o "mods\MouseTweaks-fabric-mc26.1-2.31.jar"
+curl -sL "https://cdn.modrinth.com/data/aC3cM3Vq/versions/EBIKCzuP/MouseTweaks-fabric-mc26.1-2.31.jar" -o "%PACK_DIR%mods\MouseTweaks-fabric-mc26.1-2.31.jar"
 
 :: Essentials
 echo   Essentials...
-copy "essentials\build\libs\essentials-0.1.0+26.1.jar" "mods\essentials-0.1.0+26.1.jar" >nul
-if not exist "mods\essentials-0.1.0+26.1.jar" (
+copy "%PACK_DIR%essentials\build\libs\essentials-0.1.0+26.1.jar" "%PACK_DIR%mods\essentials-0.1.0+26.1.jar" >nul
+if not exist "%PACK_DIR%mods\essentials-0.1.0+26.1.jar" (
     echo [ERROR] Failed to copy Essentials jar.
     pause
     exit /b 1
@@ -188,7 +189,7 @@ echo.
 if not exist "%MC_MODS%" mkdir "%MC_MODS%"
 
 :: Copy fresh jars
-for %%f in (mods\*.jar) do copy /Y "%%f" "%MC_MODS%\" >nul
+for %%f in ("%PACK_DIR%mods\*.jar") do copy /Y "%%f" "%MC_MODS%\" >nul
 
 set /a count=0
 for %%f in ("%MC_MODS%\*.jar") do set /a count+=1

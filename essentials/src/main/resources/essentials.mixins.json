@@ -20,7 +20,13 @@
     "autoclicker.AutoClickMixin",
     "pickup.PickupDetectMixin",
     "pickup.PickupHudMixin",
-    "statuseffect.EffectBarMixin"
+    "statuseffect.EffectBarMixin",
+    "tooltip.ItemTooltipMixin",
+    "tooltip.ContainerTooltipTextMixin",
+    "tooltip.EnderChestCaptureMixin",
+    "inventory.ContainerSortButtonMixin",
+    "inventory.ContainerHighlightMixin",
+    "inventory.SlotChangeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -2,7 +2,11 @@ package com.essentials;
 
 import com.essentials.config.EssentialsConfig;
 import com.essentials.emissive.EmissiveModelLoadingPlugin;
+import com.essentials.inventory.HotbarRefillHandler;
 import com.essentials.keybind.ModKeybinds;
+import com.essentials.tooltip.EnderChestCache;
+import com.essentials.tooltip.EnhancedItemTooltips;
+import com.essentials.tooltip.TooltipRegistration;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
@@ -20,6 +24,10 @@ public class EssentialsMod implements ClientModInitializer {
         EssentialsConfig.init();
         ModKeybinds.register();
         EmissiveModelLoadingPlugin.register();
+        TooltipRegistration.register();
+        EnhancedItemTooltips.register();
+        EnderChestCache.register();
+        HotbarRefillHandler.register();
         detectCompatibility();
 
         LOGGER.info("[Essentials] Loaded successfully.");
@@ -43,6 +51,12 @@ public class EssentialsMod implements ClientModInitializer {
         if (loader.isModLoaded("borderlesswindow")) {
             LOGGER.info("[Essentials] Detected borderless window mod — disabling built-in borderless to avoid conflict.");
             EssentialsConfig.borderlessEnabled = false;
+        }
+        if (loader.isModLoaded("easyshulkerboxes") || loader.isModLoaded("shulkerboxtooltip")) {
+            LOGGER.info("[Essentials] Detected shulker tooltip mod — disabling built-in container tooltips to avoid conflict.");
+            EssentialsConfig.shulkerTooltipEnabled = false;
+            EssentialsConfig.enderChestTooltipEnabled = false;
+            EssentialsConfig.mapTooltipEnabled = false;
         }
         // Debug HUD removed — use BetterF3 mod instead
     }
