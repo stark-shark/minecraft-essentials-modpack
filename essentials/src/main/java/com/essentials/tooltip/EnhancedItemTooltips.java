@@ -17,6 +17,7 @@ import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.equipment.Equippable;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,9 +31,14 @@ public final class EnhancedItemTooltips {
             boolean showTool = EssentialsConfig.showToolStats && ItemTypeStats.showToolStats(stack);
             boolean showWeapon = EssentialsConfig.showWeaponStats && ItemTypeStats.showWeaponStats(stack);
             boolean hasFood = stack.has(DataComponents.FOOD) && EssentialsConfig.showFoodStats;
+            boolean hasEquipment = stack.has(DataComponents.EQUIPPABLE) && EssentialsConfig.showToolStats;
+            boolean isDurableItem = stack.isDamageableItem()
+                    && !showTool && !showWeapon && !hasEquipment
+                    && (stack.has(DataComponents.TOOL) || stack.has(DataComponents.WEAPON)
+                        || stack.has(DataComponents.EQUIPPABLE) || stack.has(DataComponents.CHARGED_PROJECTILES));
 
             // Strip vanilla "When in ..." attribute section for items we enhance
-            if (showTool || showWeapon) {
+            if (showTool || showWeapon || hasEquipment) {
                 stripVanillaAttributes(lines);
             }
 
@@ -41,19 +47,18 @@ public final class EnhancedItemTooltips {
                 lines.add(Component.literal("──────────────────").withStyle(ChatFormatting.DARK_GRAY));
             }
             if (showWeapon) appendWeaponInfo(stack, lines, showTool);
+            if (hasEquipment) appendEquipmentInfo(stack, lines);
+            if (isDurableItem) appendStandaloneDurability(stack, lines);
             if (hasFood) appendFoodInfo(stack, lines);
         });
     }
 
     private static void stripVanillaAttributes(List<Component> lines) {
-        // Remove vanilla attribute lines: "When in Main Hand:", " +X Attack Damage", etc.
-        // These start at a "When in ..." line and continue until a blank line or end
         int removeStart = -1;
         for (int i = 0; i < lines.size(); i++) {
             String text = lines.get(i).getString();
             if (text.startsWith("When in ") || text.startsWith("When on ")) {
                 removeStart = i;
-                // Also remove the blank line before "When in ..." if present
                 if (removeStart > 0 && lines.get(removeStart - 1).getString().isEmpty()) {
                     removeStart--;
                 }
@@ -62,11 +67,9 @@ public final class EnhancedItemTooltips {
         }
         if (removeStart == -1) return;
 
-        // Remove from removeStart to the end of the attribute block
         int removeEnd = removeStart;
         for (int i = removeStart; i < lines.size(); i++) {
             removeEnd = i + 1;
-            // Stop if we hit a blank line after the attribute entries (not the header)
             String text = lines.get(i).getString();
             if (i > removeStart + 1 && text.isEmpty()) {
                 break;
@@ -79,7 +82,6 @@ public final class EnhancedItemTooltips {
         Tool tool = stack.get(DataComponents.TOOL);
         if (tool == null) return;
 
-        // Best mining speed from rules (tool's primary purpose speed)
         float baseSpeed = tool.defaultMiningSpeed();
         for (Tool.Rule rule : tool.rules()) {
             if (rule.speed().isPresent()) {
@@ -87,7 +89,6 @@ public final class EnhancedItemTooltips {
             }
         }
 
-        // Check for Efficiency enchantment
         float enchantedSpeed = baseSpeed;
         int effLevel = getEfficiencyLevel(stack);
         if (effLevel > 0 && baseSpeed > 1.0f) {
@@ -170,9 +171,63 @@ public final class EnhancedItemTooltips {
                 .append(Component.literal(String.format("%.1f", dps))
                         .withStyle(ChatFormatting.LIGHT_PURPLE)));
 
-        if (!stack.has(DataComponents.TOOL)) {
+        // Always show durability for weapons
+        if (!followsTool) {
+            // Only append if tool section didn't already show it
             appendDurability(stack, lines);
         }
+    }
+
+    private static void appendEquipmentInfo(ItemStack stack, List<Component> lines) {
+        Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+        if (equippable == null) return;
+
+        // Get armor/toughness from attributes
+        ItemAttributeModifiers attrs = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
+
+        final double[] armor = {0};
+        final double[] toughness = {0};
+        final double[] knockbackRes = {0};
+
+        if (attrs != null) {
+            attrs.forEach(EquipmentSlotGroup.ANY, (attribute, modifier) -> {
+                if (attribute.equals(Attributes.ARMOR)) armor[0] += modifier.amount();
+                if (attribute.equals(Attributes.ARMOR_TOUGHNESS)) toughness[0] += modifier.amount();
+                if (attribute.equals(Attributes.KNOCKBACK_RESISTANCE)) knockbackRes[0] += modifier.amount();
+            });
+        }
+
+        lines.add(Component.empty());
+
+        if (armor[0] > 0) {
+            lines.add(Component.literal("Armor: ")
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(String.format("%.0f", armor[0]))
+                            .withStyle(ChatFormatting.BLUE)));
+        }
+        if (toughness[0] > 0) {
+            lines.add(Component.literal("Toughness: ")
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(String.format("%.0f", toughness[0]))
+                            .withStyle(ChatFormatting.DARK_AQUA)));
+        }
+        if (knockbackRes[0] > 0) {
+            lines.add(Component.literal("Knockback Resistance: ")
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(String.format("%.0f%%", knockbackRes[0] * 100))
+                            .withStyle(ChatFormatting.GOLD)));
+        }
+
+        appendDurability(stack, lines);
+    }
+
+    /**
+     * For items that have durability but don't fit neatly into tool/weapon/armor
+     * (e.g., bows, crossbows, fishing rods, tridents, shields, elytra).
+     */
+    private static void appendStandaloneDurability(ItemStack stack, List<Component> lines) {
+        lines.add(Component.empty());
+        appendDurability(stack, lines);
     }
 
     private static void appendDurability(ItemStack stack, List<Component> lines) {
@@ -220,8 +275,6 @@ public final class EnhancedItemTooltips {
                 .append(Component.literal("(" + nutrition + ")")
                         .withStyle(ChatFormatting.DARK_GRAY)));
 
-        // Saturation quality — based on actual restored value
-        // Rotten flesh ~0.6, bread ~3, cooked chicken ~7, steak ~12.8, golden carrot ~14
         String quality;
         ChatFormatting qualityColor;
         if (saturation >= 10.0f) { quality = "Excellent"; qualityColor = ChatFormatting.GREEN; }

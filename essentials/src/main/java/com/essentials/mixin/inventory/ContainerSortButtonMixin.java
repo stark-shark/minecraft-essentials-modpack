@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,29 +36,27 @@ public abstract class ContainerSortButtonMixin extends Screen {
     private void essentials$addButtons(CallbackInfo ci) {
         if (!EssentialsConfig.inventorySortEnabled) return;
         if ((Object) this instanceof CreativeModeInventoryScreen) return;
+        if ((Object) this instanceof InventoryScreen) return;
 
-        boolean isPlayerInv = (Object) this instanceof InventoryScreen;
-
-        if (isPlayerInv) {
-            addPlayerInventoryButtons();
-        } else {
-            addContainerButtons();
-        }
+        if (!isStorageContainer()) return;
+        addContainerButtons();
     }
 
-    private void addPlayerInventoryButtons() {
-        // Player inventory only screen — 3 buttons above main inventory area
-        int btnSize = 10;
-        int gap = 1;
-        int rightEdge = leftPos + imageWidth - 7;
-        int btnY = topPos + 84 - btnSize - 2;
-
-        // Sort Inventory
-        Button sortBtn = Button.builder(Component.literal("\u2630"), btn ->
-                InventorySortHandler.sort(9, 36)
-        ).bounds(rightEdge - btnSize, btnY, btnSize, btnSize).build();
-        sortBtn.setTooltip(Tooltip.create(Component.literal("Sort Inventory")));
-        addRenderableWidget(sortBtn);
+    private boolean isStorageContainer() {
+        try {
+            MenuType<?> type = getMenu().getType();
+            return type == MenuType.GENERIC_9x1
+                    || type == MenuType.GENERIC_9x2
+                    || type == MenuType.GENERIC_9x3
+                    || type == MenuType.GENERIC_9x4
+                    || type == MenuType.GENERIC_9x5
+                    || type == MenuType.GENERIC_9x6
+                    || type == MenuType.GENERIC_3x3
+                    || type == MenuType.HOPPER
+                    || type == MenuType.SHULKER_BOX;
+        } catch (UnsupportedOperationException e) {
+            return false;
+        }
     }
 
     private void addContainerButtons() {
@@ -69,59 +68,48 @@ public abstract class ContainerSortButtonMixin extends Screen {
         int btnSize = 10;
         int gap = 1;
         int step = btnSize + gap;
-
-        // === Container-side buttons (top-right of container area) ===
         int cRightEdge = leftPos + imageWidth - 7;
         int cBtnY = topPos + 5;
 
-        // Sort Container
         Button sortContBtn = Button.builder(Component.literal("\u2630"), btn ->
                 InventorySortHandler.sort(0, containerSlots)
         ).bounds(cRightEdge - btnSize, cBtnY, btnSize, btnSize).build();
         sortContBtn.setTooltip(Tooltip.create(Component.literal("Sort Container")));
         addRenderableWidget(sortContBtn);
 
-        // Move Matching Items (inv -> container)
         Button moveMatchBtn = Button.builder(Component.literal("\u2248"), btn ->
                 ContainerActions.moveMatchingToContainer(containerSlots)
         ).bounds(cRightEdge - btnSize - step, cBtnY, btnSize, btnSize).build();
         moveMatchBtn.setTooltip(Tooltip.create(Component.literal("Move Matching Items")));
         addRenderableWidget(moveMatchBtn);
 
-        // Move All (inv -> container)
         Button moveAllBtn = Button.builder(Component.literal("\u2191"), btn ->
                 ContainerActions.moveAllToContainer(containerSlots)
         ).bounds(cRightEdge - btnSize - step * 2, cBtnY, btnSize, btnSize).build();
         moveAllBtn.setTooltip(Tooltip.create(Component.literal("Move All")));
         addRenderableWidget(moveAllBtn);
 
-        // Highlight Matching (link icon)
         Button linkBtn = Button.builder(Component.literal("\u26D3"), btn ->
                 MatchHighlighter.toggle(containerSlots)
         ).bounds(cRightEdge - btnSize - step * 3, cBtnY, btnSize, btnSize).build();
         linkBtn.setTooltip(Tooltip.create(Component.literal("Highlight Matching Items")));
         addRenderableWidget(linkBtn);
 
-        // === Inventory-side buttons (above player inventory section in container GUI) ===
-        // Player inventory area is at the bottom of the container GUI
-        // In standard container GUIs, player inv starts ~84px from the bottom
+        // === Inventory-side buttons ===
         int invBtnY = topPos + imageHeight - 83 - btnSize - 2;
 
-        // Sort Inventory
         Button sortInvBtn = Button.builder(Component.literal("\u2630"), btn ->
                 InventorySortHandler.sort(containerSlots, totalSlots - 9)
         ).bounds(cRightEdge - btnSize, invBtnY, btnSize, btnSize).build();
         sortInvBtn.setTooltip(Tooltip.create(Component.literal("Sort Inventory")));
         addRenderableWidget(sortInvBtn);
 
-        // Take Matching Items (container -> inv)
         Button takeMatchBtn = Button.builder(Component.literal("\u2248"), btn ->
                 ContainerActions.takeMatchingFromContainer(containerSlots)
         ).bounds(cRightEdge - btnSize - step, invBtnY, btnSize, btnSize).build();
         takeMatchBtn.setTooltip(Tooltip.create(Component.literal("Take Matching Items")));
         addRenderableWidget(takeMatchBtn);
 
-        // Take All (container -> inv)
         Button takeAllBtn = Button.builder(Component.literal("\u2193"), btn ->
                 ContainerActions.takeAllFromContainer(containerSlots)
         ).bounds(cRightEdge - btnSize - step * 2, invBtnY, btnSize, btnSize).build();
