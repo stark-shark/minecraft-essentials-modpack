@@ -6,6 +6,7 @@ import com.essentials.inventory.InventorySortHandler;
 import com.essentials.inventory.MatchHighlighter;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -15,6 +16,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -28,6 +30,9 @@ public abstract class ContainerSortButtonMixin extends Screen {
     @Shadow protected int imageHeight;
     @Shadow protected abstract <T extends AbstractContainerMenu> T getMenu();
 
+    @Unique
+    private Button essentials$invSortBtn = null;
+
     protected ContainerSortButtonMixin(Component title) {
         super(title);
     }
@@ -36,10 +41,36 @@ public abstract class ContainerSortButtonMixin extends Screen {
     private void essentials$addButtons(CallbackInfo ci) {
         if (!EssentialsConfig.inventorySortEnabled) return;
         if ((Object) this instanceof CreativeModeInventoryScreen) return;
-        if ((Object) this instanceof InventoryScreen) return;
+
+        if ((Object) this instanceof InventoryScreen) {
+            addInventorySortButton();
+            return;
+        }
 
         if (!isStorageContainer()) return;
         addContainerButtons();
+    }
+
+    @Inject(method = "extractSlots", at = @At("HEAD"))
+    private void essentials$repositionInvSortButton(GuiGraphicsExtractor graphics, int mouseX, int mouseY, CallbackInfo ci) {
+        // Reposition the sort button every frame to track leftPos (recipe book shifts it)
+        if (essentials$invSortBtn != null) {
+            int btnSize = 10;
+            essentials$invSortBtn.setX(leftPos + imageWidth - 7 - btnSize);
+            essentials$invSortBtn.setY(topPos + 84 - btnSize - 2);
+        }
+    }
+
+    private void addInventorySortButton() {
+        int btnSize = 10;
+        int btnX = leftPos + imageWidth - 7 - btnSize;
+        int btnY = topPos + 84 - btnSize - 2;
+
+        essentials$invSortBtn = Button.builder(Component.literal("\u2630"), btn ->
+                InventorySortHandler.sort(9, 36)
+        ).bounds(btnX, btnY, btnSize, btnSize).build();
+        essentials$invSortBtn.setTooltip(Tooltip.create(Component.literal("Sort Inventory")));
+        addRenderableWidget(essentials$invSortBtn);
     }
 
     private boolean isStorageContainer() {
