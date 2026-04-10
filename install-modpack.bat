@@ -214,33 +214,44 @@ exit /b 0
 :: ============================================
 :: SUBROUTINE: Download latest Fabric version
 :: of a Modrinth mod by project ID.
-:: Tries MC_VER first, then falls back to any
-:: version listing the current major (26.1).
+:: Uses a temp PowerShell script for reliable
+:: JSON parsing. Tries MC_VER, then 26.1.1, 26.1.
 :: ============================================
 :dl_mod
 set "MOD_NAME=%~1"
 set "MOD_ID=%~2"
 echo   %MOD_NAME%...
 
-:: Try exact MC version first, then fall back to broader matches
-for %%V in ("%MC_VER%" "26.1.1" "26.1") do (
-    for /f "delims=" %%u in ('curl -sL "%API%/project/%MOD_ID%/version?game_versions=[%%~V]&loaders=[%%~22%LOADER%%%~22]" 2^>nul ^| findstr /R "\"url\":\"https://cdn"') do (
-        set "LINE=%%u"
-        goto :parse_url
-    )
-)
-echo     [WARN] No compatible version found for %MOD_NAME%
-goto :eof
+:: Write PowerShell helper to temp file (avoids all escaping issues)
+set "PS_SCRIPT=%TEMP%\essentials-dl.ps1"
+(
+echo $ErrorActionPreference = 'SilentlyContinue'
+echo $api = 'https://api.modrinth.com/v2/project/%MOD_ID%/version'
+echo foreach ^($v in @^('%MC_VER%','26.1.1','26.1'^)^) {
+echo     $url = "$api`?loaders=[`"fabric`"]`&game_versions=[`"$v`"]"
+echo     $r = Invoke-RestMethod -Uri $url -TimeoutSec 15
+echo     if ^($r -and $r.Count -gt 0^) {
+echo         $f = $r[0].files ^| Where-Object { $_.primary } ^| Select-Object -First 1
+echo         if ^($f^) { Write-Output $f.url; exit 0 }
+echo     }
+echo }
+) > "!PS_SCRIPT!"
 
-:parse_url
-:: Extract the CDN URL from the JSON line
-set "DL_URL=!LINE:*"url":"=!"
-set "DL_URL=!DL_URL:"=!"
-set "DL_URL=!DL_URL:,=!"
-:: Extract filename from URL
+set "DL_URL="
+for /f "delims=" %%u in ('powershell -NoProfile -ExecutionPolicy Bypass -File "!PS_SCRIPT!"') do (
+    set "DL_URL=%%u"
+)
+del "!PS_SCRIPT!" 2>nul
+
+if not defined DL_URL (
+    echo     [WARN] No compatible version found for %MOD_NAME%
+    goto :eof
+)
+
+:: Extract filename from URL and decode %%2B to +
 for %%f in ("!DL_URL!") do set "DL_FILE=%%~nxf"
-:: Decode %%2B back to + in filename
 set "DL_FILE=!DL_FILE:%%2B=+!"
+
 curl -sL "!DL_URL!" -o "%PACK_DIR%mods\!DL_FILE!"
 if exist "%PACK_DIR%mods\!DL_FILE!" (
     echo     [OK] !DL_FILE!
