@@ -63,6 +63,36 @@ public class EssentialsConfig {
     public static int autoClickButton = 0;         // 0 = left click, 1 = right click
     public static int autoClickCPS = 5;            // clicks per second (1-20)
 
+    public static boolean shulkerTooltipEnabled = true;
+    public static boolean enderChestTooltipEnabled = true;
+    public static boolean mapTooltipEnabled = true;
+    public static boolean enhancedTooltipsEnabled = true;
+    public static boolean showToolStats = true;
+    public static boolean showWeaponStats = true;
+    public static boolean showFoodStats = true;
+
+    // Per-item-type stat modes: 0 = tool only, 1 = weapon only, 2 = both
+    public static int pickaxeStatMode = 0;  // Tool only
+    public static int axeStatMode = 2;      // Both
+    public static int shovelStatMode = 0;   // Tool only
+    public static int hoeStatMode = 0;      // Tool only
+    public static int swordStatMode = 1;    // Weapon only
+    public static int maceStatMode = 1;     // Weapon only
+
+    public static boolean hotbarRefillEnabled = true;
+    public static boolean refillOnDrop = false;
+    public static boolean refillMatchTypeOnly = true; // true = any diamond pick matches any diamond pick
+    public static boolean refillBlocks = true;
+    public static boolean refillTools = true;
+    public static boolean refillWeapons = true;
+    public static boolean refillFood = true;
+    public static boolean refillContainers = true;
+    public static boolean refillPotions = true;
+    public static boolean refillProjectiles = true;
+    public static boolean refillOther = true;
+
+    public static boolean inventorySortEnabled = true;
+
     public static void init() {
         if (Files.exists(CONFIG_PATH)) {
             load();
@@ -124,6 +154,33 @@ public class EssentialsConfig {
             autoClickButton = getInt(props, "autoclick.button", autoClickButton);
             autoClickCPS = Math.clamp(getInt(props, "autoclick.cps", autoClickCPS), 1, 20);
 
+            shulkerTooltipEnabled = getBool(props, "tooltip.shulker", shulkerTooltipEnabled);
+            enderChestTooltipEnabled = getBool(props, "tooltip.enderchest", enderChestTooltipEnabled);
+            mapTooltipEnabled = getBool(props, "tooltip.map", mapTooltipEnabled);
+            enhancedTooltipsEnabled = getBool(props, "tooltip.enhanced", enhancedTooltipsEnabled);
+            showToolStats = getBool(props, "tooltip.toolStats", showToolStats);
+            showWeaponStats = getBool(props, "tooltip.weaponStats", showWeaponStats);
+            showFoodStats = getBool(props, "tooltip.foodStats", showFoodStats);
+            pickaxeStatMode = getInt(props, "tooltip.stats.pickaxe", pickaxeStatMode);
+            axeStatMode = getInt(props, "tooltip.stats.axe", axeStatMode);
+            shovelStatMode = getInt(props, "tooltip.stats.shovel", shovelStatMode);
+            hoeStatMode = getInt(props, "tooltip.stats.hoe", hoeStatMode);
+            swordStatMode = getInt(props, "tooltip.stats.sword", swordStatMode);
+            maceStatMode = getInt(props, "tooltip.stats.mace", maceStatMode);
+
+            hotbarRefillEnabled = getBool(props, "inventory.hotbarRefill", hotbarRefillEnabled);
+            refillOnDrop = getBool(props, "inventory.refill.onDrop", refillOnDrop);
+            refillMatchTypeOnly = getBool(props, "inventory.refill.matchTypeOnly", refillMatchTypeOnly);
+            refillBlocks = getBool(props, "inventory.refill.blocks", refillBlocks);
+            refillTools = getBool(props, "inventory.refill.tools", refillTools);
+            refillWeapons = getBool(props, "inventory.refill.weapons", refillWeapons);
+            refillFood = getBool(props, "inventory.refill.food", refillFood);
+            refillContainers = getBool(props, "inventory.refill.containers", refillContainers);
+            refillPotions = getBool(props, "inventory.refill.potions", refillPotions);
+            refillProjectiles = getBool(props, "inventory.refill.projectiles", refillProjectiles);
+            refillOther = getBool(props, "inventory.refill.other", refillOther);
+            inventorySortEnabled = getBool(props, "inventory.sort", inventorySortEnabled);
+
             EssentialsMod.LOGGER.info("[Essentials] Config loaded.");
         } catch (IOException e) {
             EssentialsMod.LOGGER.error("[Essentials] Failed to load config", e);
@@ -181,6 +238,33 @@ public class EssentialsConfig {
             props.setProperty("autoclick.mode", String.valueOf(autoClickMode));
             props.setProperty("autoclick.button", String.valueOf(autoClickButton));
             props.setProperty("autoclick.cps", String.valueOf(autoClickCPS));
+
+            props.setProperty("tooltip.shulker", String.valueOf(shulkerTooltipEnabled));
+            props.setProperty("tooltip.enderchest", String.valueOf(enderChestTooltipEnabled));
+            props.setProperty("tooltip.map", String.valueOf(mapTooltipEnabled));
+            props.setProperty("tooltip.enhanced", String.valueOf(enhancedTooltipsEnabled));
+            props.setProperty("tooltip.toolStats", String.valueOf(showToolStats));
+            props.setProperty("tooltip.weaponStats", String.valueOf(showWeaponStats));
+            props.setProperty("tooltip.foodStats", String.valueOf(showFoodStats));
+            props.setProperty("tooltip.stats.pickaxe", String.valueOf(pickaxeStatMode));
+            props.setProperty("tooltip.stats.axe", String.valueOf(axeStatMode));
+            props.setProperty("tooltip.stats.shovel", String.valueOf(shovelStatMode));
+            props.setProperty("tooltip.stats.hoe", String.valueOf(hoeStatMode));
+            props.setProperty("tooltip.stats.sword", String.valueOf(swordStatMode));
+            props.setProperty("tooltip.stats.mace", String.valueOf(maceStatMode));
+
+            props.setProperty("inventory.hotbarRefill", String.valueOf(hotbarRefillEnabled));
+            props.setProperty("inventory.refill.onDrop", String.valueOf(refillOnDrop));
+            props.setProperty("inventory.refill.matchTypeOnly", String.valueOf(refillMatchTypeOnly));
+            props.setProperty("inventory.refill.blocks", String.valueOf(refillBlocks));
+            props.setProperty("inventory.refill.tools", String.valueOf(refillTools));
+            props.setProperty("inventory.refill.weapons", String.valueOf(refillWeapons));
+            props.setProperty("inventory.refill.food", String.valueOf(refillFood));
+            props.setProperty("inventory.refill.containers", String.valueOf(refillContainers));
+            props.setProperty("inventory.refill.potions", String.valueOf(refillPotions));
+            props.setProperty("inventory.refill.projectiles", String.valueOf(refillProjectiles));
+            props.setProperty("inventory.refill.other", String.valueOf(refillOther));
+            props.setProperty("inventory.sort", String.valueOf(inventorySortEnabled));
 
             props.store(Files.newOutputStream(CONFIG_PATH), "Essentials Mod Config");
             EssentialsMod.LOGGER.info("[Essentials] Config saved.");
