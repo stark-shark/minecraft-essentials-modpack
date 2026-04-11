@@ -1,5 +1,33 @@
 # Essentials Mod Changelog
 
+## v2.0.1 — 2026-04-11
+
+Bug fixes and polish for v2.0.0.
+
+### Fixes
+- **Ender chest cache on realms/servers** — rewrote capture to use screen title detection instead of server-side `PlayerEnderChestContainer` methods that never fire on the client
+- **Sort button tracks recipe book** — repositions via `containerTick` instead of `extractSlots` (which is overridden by `AbstractRecipeBookScreen`)
+- **Container buttons filtered** — only appear on storage containers (chests, barrels, hoppers, shulker boxes, dispensers/droppers), not crafting tables/furnaces/anvils/etc
+- **Enchantment lookup fixed** — reads directly from item's `ENCHANTMENTS` data component instead of level registry (which failed on realms)
+- **Vanilla "When in/on" stripping** — now removes ALL equipment slot sections in one pass
+
+### Enhanced Tooltips — Expanded
+- **Armor stats** — armor points, toughness, knockback resistance, damage reduction with base → enchanted display for Protection/Fire/Blast/Projectile Protection
+- **Ranged weapon stats** — bow arrow damage with Power bonus, knockback from Punch; crossbow damage, charge time from Quick Charge, piercing level
+- **Weapon durability** — always shown in the weapon section for weapon-primary items (sword, bow, crossbow, mace, trident)
+- **Durability placement** — follows item identity: tools show in tool section, weapons in weapon section
+- **Sharpness/Smite/Bane** — attack damage shows base → enchanted, conditional bonuses for Smite/Bane
+- **Unbreaking** — all items show effective durability (base → ~effective)
+
+### Installer
+- Auto-resolves latest mod versions from Modrinth API (no hardcoded URLs)
+- Uses temp `.ps1` file for reliable PowerShell JSON parsing
+- Falls back through 26.1.2 → 26.1.1 → 26.1 for compatibility
+- `clean build` prevents stale jar pickup
+- Updated for MC 26.1.2
+
+---
+
 ## v2.0.0 — 2026-04-10
 
 Major feature update with container tooltips, inventory management, and enhanced item info.

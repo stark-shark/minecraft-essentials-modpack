@@ -12,7 +12,7 @@ set MC_CONFIG=%APPDATA%\.minecraft\config
 echo  This will remove the following from your .minecraft folder:
 echo.
 echo  Mods (from %MC_MODS%):
-echo    - essentials-0.1.0+26.1.jar
+echo    - essentials-*.jar
 echo    - fabric-api-*.jar
 echo    - cloth-config-*.jar
 echo    - modmenu-*.jar
@@ -26,6 +26,7 @@ echo    - MouseTweaks-fabric-*.jar
 echo.
 echo  Config:
 echo    - %MC_CONFIG%\essentials.properties
+echo    - %MC_CONFIG%\essentials\ (ender chest cache)
 echo.
 echo  Nothing else will be touched.
 echo.
@@ -54,6 +55,7 @@ del /Q "%MC_MODS%\MouseTweaks-fabric-*.jar" 2>nul
 
 echo  Removing config...
 del /Q "%MC_CONFIG%\essentials.properties" 2>nul
+if exist "%MC_CONFIG%\essentials" rd /S /Q "%MC_CONFIG%\essentials" 2>nul
 
 echo.
 echo  ===================================

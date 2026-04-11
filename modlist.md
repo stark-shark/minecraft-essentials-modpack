@@ -1,7 +1,7 @@
-# Mod List — Essentials Modpack (MC 26.1.1 Fabric)
+# Mod List — Essentials Modpack (MC 26.1.x Fabric)
 
 ### Custom
-- [x] **Essentials** — Build from `essentials/` source
+- [x] **Essentials** v2.0.0 — Build from `essentials/` source
 
 ### Dependencies
 - [x] [Fabric API](https://modrinth.com/mod/fabric-api)
@@ -11,7 +11,6 @@
 ### Performance
 - [x] [Sodium](https://modrinth.com/mod/sodium)
 - [x] [Lithium](https://modrinth.com/mod/lithium)
-- [x] [Entity Culling](https://modrinth.com/mod/entityculling)
 
 ### Visual
 - [x] [Iris Shaders](https://modrinth.com/mod/iris)

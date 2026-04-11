@@ -6,7 +6,6 @@ import com.essentials.inventory.InventorySortHandler;
 import com.essentials.inventory.MatchHighlighter;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -51,9 +50,9 @@ public abstract class ContainerSortButtonMixin extends Screen {
         addContainerButtons();
     }
 
-    @Inject(method = "extractSlots", at = @At("HEAD"))
-    private void essentials$repositionInvSortButton(GuiGraphicsExtractor graphics, int mouseX, int mouseY, CallbackInfo ci) {
-        // Reposition the sort button every frame to track leftPos (recipe book shifts it)
+    @Inject(method = "containerTick", at = @At("TAIL"))
+    private void essentials$repositionInvSortButton(CallbackInfo ci) {
+        // Reposition the sort button every tick to track leftPos (recipe book shifts it)
         if (essentials$invSortBtn != null) {
             int btnSize = 10;
             essentials$invSortBtn.setX(leftPos + imageWidth - 7 - btnSize);

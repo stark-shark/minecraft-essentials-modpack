@@ -1,6 +1,6 @@
 # Essentials Modpack
 
-A curated Fabric modpack for Minecraft 26.1.1 focused on performance, quality-of-life, and visual enhancements. Client-side only — no server installation needed.
+A curated Fabric modpack for Minecraft 26.1.x focused on performance, quality-of-life, and visual enhancements. Client-side only — no server installation needed.
 
 Created by [stark-shark](https://github.com/stark-shark) | [Modrinth](https://modrinth.com/project/mc-essentials-modpack)
 
@@ -9,18 +9,26 @@ Created by [stark-shark](https://github.com/stark-shark) | [Modrinth](https://mo
 ## Quick Start
 
 ### One-Click Install (Windows)
-1. Install [Java 25 JDK](https://adoptium.net/) and [Fabric Loader](https://fabricmc.net/use/installer/) for MC 26.1.1
+1. Install [Java 25 JDK](https://adoptium.net/) and [Fabric Loader](https://fabricmc.net/use/installer/) for your MC version
 2. Download or clone this repo
 3. Double-click **`install-modpack.bat`**
-4. Launch Minecraft with the `fabric-loader-26.1.1` profile
+4. Launch Minecraft with your Fabric Loader profile
 
-The installer builds the Essentials mod, downloads all mods from Modrinth, and copies everything to your `.minecraft/mods/` folder. If you have existing mods, you'll be warned before anything is touched.
+The installer builds the Essentials mod from source, auto-resolves the latest compatible mods from Modrinth, and copies everything to your `.minecraft/mods/` folder.
 
 To uninstall, double-click **`uninstall-modpack.bat`**.
 
+## Supported Versions
+
+| Minecraft | Essentials | Status |
+|-----------|-----------|--------|
+| **26.1.x** (26.1, 26.1.1, 26.1.2) | v2.0.0 | Current |
+
+See [`versions/`](versions/) for per-version compatibility notes.
+
 ## Requirements
 
-- Minecraft Java Edition 26.1.1
+- Minecraft Java Edition 26.1.x
 - Java 25 JDK
 - Fabric Loader 0.18.6+
 
@@ -29,7 +37,7 @@ To uninstall, double-click **`uninstall-modpack.bat`**.
 ### Custom
 | Mod | Features |
 |---|---|
-| **Essentials** | Emissive textures, zoom, fullbright, fog control, dynamic FPS, borderless fullscreen, mob/player health bars, pickup notifier, status effect bars, coords HUD, armor durability, death waypoint, auto-clicker, config screen |
+| **Essentials** v2.0.0 | Emissive textures, zoom, fullbright, fog control, dynamic FPS, borderless fullscreen, health bars, pickup notifier, status effect bars, coords HUD, durability display, death waypoint, auto-clicker, container tooltips (shulker/ender chest/map), hotbar auto-refill, inventory sort, container management buttons, enhanced item tooltips, match highlighting |
 
 ### Dependencies
 | Mod | Source |
@@ -70,7 +78,7 @@ To uninstall, double-click **`uninstall-modpack.bat`**.
 | **F11** | Borderless fullscreen |
 | **` (backtick)** | Toggle auto-click/hold |
 
-All keybinds are configurable in Options > Controls > Essentials. Conflicts show in red.
+All keybinds are configurable in Options > Controls > Essentials.
 
 ## Essentials Mod — Features
 
@@ -91,12 +99,34 @@ All keybinds are configurable in Options > Controls > Essentials. Conflicts show
 - **Zoom** — Smooth zoom with scroll-to-adjust, configurable FOV and sensitivity
 - **Auto-Clicker** — Toggle hold or interval clicking with CPS slider, left/right click
 
+**Container Tooltips** *(v2.0)*
+- **Shulker Box Preview** — Visual 9x3 item grid with color-matched border
+- **Ender Chest Preview** — Cached per world/server, persists across sessions
+- **Map Preview** — 128x128 pixel-accurate map rendering in tooltip
+
+**Inventory Management** *(v2.0)*
+- **Hotbar Auto-Refill** — Replaces consumed hotbar items from inventory with per-category toggles
+- **Inventory Sort** — Sort button in inventory, tracks recipe book position
+- **Container Buttons** — Sort, Move All, Move Matching, Take All, Take Matching, Highlight Matching
+- **Match Highlighting** — Red borders on items shared between container and inventory
+
+**Enhanced Item Tooltips** *(v2.0)*
+- **Tool Stats** — Mining speed with Efficiency enchant bonus (base → enchanted)
+- **Weapon Stats** — Attack damage with Sharpness/Smite/Bane, attack speed, DPS
+- **Ranged Stats** — Bow/crossbow arrow damage with Power, knockback, charge time, piercing
+- **Armor Stats** — Armor points, toughness, damage reduction with Protection enchant bonuses
+- **Food Stats** — Hunger bar visualization, saturation with quality rating
+- **Durability** — Color-coded with Unbreaking effective durability
+- **Per-item config** — Choose Tool/Weapon/Both per item type (Pickaxe, Axe, Sword, etc.)
+- **Vanilla attribute stripping** — Removes redundant "When in Hand" section
+
 **Performance**
 - **Dynamic FPS** — Throttles FPS when unfocused (15) or minimized (1)
 - **Borderless Fullscreen** — Fast alt-tab, replaces exclusive fullscreen
 
 **Config**
 - **Config Screen** — Sidebar layout with global search, sliders, grouped sections, reset defaults
+- **Settings Tooltips** — Every setting has a hover tooltip (MC-style purple border)
 - **Config Persistence** — All settings saved to `config/essentials.properties`
 - **Mod Compatibility** — Auto-disables overlapping features when other mods detected
 
@@ -105,7 +135,7 @@ All keybinds are configurable in Options > Controls > Essentials. Conflicts show
 - **Sodium + Emissive Overlays** — May need testing; Sodium replaces the block renderer
 - **Iris + Fullbright** — Shader packs may override fullbright
 - **LambDynamicLights** — Provides handheld light glow (not built into Essentials)
-- **Auto-defers** — Essentials disables its own zoom/dynamic FPS if Zoomify/Dynamic FPS mods are installed
+- **Auto-defers** — Essentials disables its own features if conflicting mods are installed
 
 ## License
 
